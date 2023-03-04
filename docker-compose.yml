@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.php
+    container_name: php
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html/
+    working_dir: /html/app/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    links:
+      - db
+  db:
+    image: mysql:latest
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
